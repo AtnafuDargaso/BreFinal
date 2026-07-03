@@ -73,80 +73,21 @@ export function Checkout({ isOpen, onClose }: CheckoutProps) {
         onClose();
         setCheckoutStep('cart');
         return;
-      }else if (paymentMethod === 'paypal') {
-        cartStore.clearCart();
-        window.location.href = 'https://www.paypal.com/';
-        return;
-      } else if (paymentMethod === 'venmo') {
-        // cartStore.clearCart();
-        // alert('Scan to pay with Venmo. Use your phone\'s camera to open the app and pay.');
-        // window.location.reload();
-        // return;
-        // Venmo: open a new tab with the QR code image and instructions
-        const venmoWindow = window.open('', '_blank');
-        if (venmoWindow) {
-          const origin = window.location.origin;
-          venmoWindow.document.write(`
-            <!DOCTYPE html>
-            <html>
-              <head>
-                <title>Pay with Venmo</title>
-                <style>
-                  body {
-                    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    justify-content: center;
-                    height: 100vh;
-                    margin: 0;
-                    background-color: #f9f9f9;
-                    text-align: center;
-                  }
-                  img {
-                    max-width: 300px;
-                    border-radius: 12px;
-                    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-                    margin-bottom: 24px;
-                    background: white;
-                    padding: 16px;
-                  }
-                  h1 { font-size: 24px; color: #333; margin: 0 0 8px 0; }
-                  p { font-size: 16px; color: #666; margin: 0; max-width: 300px;}
-                </style>
-              </head>
-              <body>
-                <img src="${origin}/venmoQR.png" alt="Venmo QR Code" />
-                <h1>Scan to pay with Venmo</h1>
-                <p>Use your phone's camera to open the app and pay.</p>
-              </body>
-            </html>
-          `);
-          venmoWindow.document.close();
-        }
-        
-        cartStore.clearCart();
-        setCart(cartStore.getCart());
-        onClose();
-        setCheckoutStep('cart');
-        return;
-      } else if (paymentMethod === 'google_pay') {
-       const amountCents = totalPrice; // cents
-        const amount = (amountCents / 100).toFixed(2);
-        const summary = cart.items.map((it: any) => `${it.name} x${it.quantity}`).join('; ');
-        const googlePayUrl = new URL('https://pay.google.com/');
-        googlePayUrl.searchParams.set('amount', amount);
-        googlePayUrl.searchParams.set('currency', 'USD');
-        googlePayUrl.searchParams.set('order', summary);
-        window.open(googlePayUrl.toString(), '_blank', 'noopener,noreferrer');
+      }else if (paymentMethod === 'paypal' || paymentMethod === 'venmo' || paymentMethod === 'google_pay') {
+        const shopifyUrl = `https://ffrg7x-m3.myshopify.com/`;
+        window.open(shopifyUrl, '_blank', 'noopener,noreferrer');
         cartStore.clearCart();
         setCart(cartStore.getCart());
         onClose();
         setCheckoutStep('cart');
         return;
       } else {
+                // Redirect Credit Card to Shopify exactly like Shop Pay
+        const shopifyUrl = `https://ffrg7x-m3.myshopify.com/`;
+        window.open(shopifyUrl, '_blank', 'noopener,noreferrer');
+        
         cartStore.clearCart();
-        alert(`Order placed successfully with Credit Card! Order ID: ${orderId}`);
+        setCart(cartStore.getCart());
         onClose();
         setCheckoutStep('cart');
         return;
