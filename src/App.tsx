@@ -4,6 +4,7 @@ import { ChatBot } from './chatbot/ChatBot';
 import { Checkout } from './components/Checkout';
 import { ProductSelector } from './components/ProductSelector';
 import { YouTubeSection } from './components/YouTubeSection';
+import { AwardsSection } from './components/AwardsSection';
 import { PaymentPage } from './pages/PaymentPage';
 import { cartStore } from './store/cartStore';
 import { Audiobook } from './pages/Audiobook';
@@ -357,6 +358,8 @@ const [currentPage, setCurrentPage] = useState<'home' | 'payment' | 'audiobook' 
         </section>
 
         <YouTubeSection />
+
+        <AwardsSection />
 
         <section id="testimonials" className="py-20 bg-slate-800/40 backdrop-blur-sm">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

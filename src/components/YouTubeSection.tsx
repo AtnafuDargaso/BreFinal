@@ -23,19 +23,8 @@ export function YouTubeSection() {
               <iframe
                 width="100%"
                 height="100%"
-                src="https://www.youtube.com/embed/b_arH-hgo5Y"
-                title="True Light Video 1"
-                frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowFullScreen
-              ></iframe>
-            </div>
-            <div className="rounded-xl overflow-hidden shadow-2xl border border-amber-500/20 aspect-video bg-slate-900">
-              <iframe
-                width="100%"
-                height="100%"
-                src="https://www.youtube.com/embed/98PR54TB9xo"
-                title="True Light Video 2"
+                src="https://www.youtube.com/embed/M2TaAbAIP5Q"
+                title="True Light Video"
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 allowFullScreen
@@ -75,7 +64,7 @@ export function YouTubeSection() {
             </div>
 
             <a
-              href="https://www.youtube.com/playlist?list=PLITEme3CZeVm3UVzmylEX_0UT0hPKf734"
+              href="https://youtu.be/M2TaAbAIP5Q?si=-gRF3pQCXt6W8HDs"
               target="_blank"
               rel="noopener noreferrer"
               className="w-full inline-flex items-center justify-center gap-2 px-6 py-3 bg-amber-500 text-white font-semibold rounded-lg hover:bg-amber-600 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2 focus:ring-offset-slate-900 transition-all transform hover:scale-105 shadow-lg"

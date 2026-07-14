@@ -3,3 +3,20 @@ Since you've outlined your pending milestones, here is how we can proceed to kno
 Swap out placeholders in Checkout.tsx: Do you have the live URLs for Google Pay, Venmo, or PayPal? Let me know the URLs and I will happily replace the placeholder values in the Checkout.tsx file for you.
 
 Verify Deployment: Once we've confirmed the integrations are working and the changes are wrapped up, you can execute a build to push these changes to Vercel and monitor the live GoDaddy domain.
+
+
+
+Ran terminal command:  echo '=== production ===' && npx vercel env ls production && echo '=== preview ===' && npx vercel env ls preview
+
+## ✅ Fixed
+
+- Added `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` to Vercel production for `true-light/brefinal`
+- Confirmed production env vars now exist
+- Triggered a production deploy, and Vercel aliased it to `https://brefinal.vercel.app`
+
+## Notes
+
+- The previous issue was that production had no Supabase keys configured.
+- `preview` envs are still empty, but production is now configured.
+
+If you want, I can also add the same vars to `preview` so PR/preview deployments work too.

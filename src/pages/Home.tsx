@@ -4,6 +4,7 @@ import { ChatBot } from '../chatbot/ChatBot';
 import { ProductSelector } from '../components/ProductSelector';
 import { Checkout } from '../components/Checkout';
 import { YouTubeSection } from '../components/YouTubeSection';
+import { AwardsSection } from '../components/AwardsSection';
 
 export function Home() {
   const [productSelectorOpen, setProductSelectorOpen] = useState(false);
@@ -33,6 +34,8 @@ export function Home() {
         </section>
 
         <YouTubeSection />
+
+        <AwardsSection />
 
         <section id="testimonials" className="py-20 bg-slate-800/40 backdrop-blur-sm">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
