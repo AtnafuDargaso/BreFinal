@@ -1,4 +1,4 @@
-import { Book, Mail, Heart, Star, Facebook, Linkedin, Phone, ShoppingCart, Lock } from 'lucide-react';
+import { Book, Mail, Heart, Star, Facebook, Linkedin, Phone, ShoppingCart, Lock, Menu, X } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { ChatBot } from './chatbot/ChatBot';
 import { Checkout } from './components/Checkout';
@@ -76,7 +76,31 @@ function StarRating({ rating }: { rating: number }) {
 function App() {
   const [cartOpen, setCartOpen] = useState(false);
   const [productSelectorOpen, setProductSelectorOpen] = useState(false);
-const [currentPage, setCurrentPage] = useState<'home' | 'payment' | 'audiobook' | 'courses' | 'blog' | 'admin'>('home');  const totalItems = cartStore.getTotalItems();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState<'home' | 'payment' | 'audiobook' | 'courses' | 'blog' | 'admin'>('home');
+  const totalItems = cartStore.getTotalItems();
+
+  const handleNavigation = (page: 'home' | 'audiobook' | 'courses' | 'blog', sectionId?: string) => {
+    setMobileMenuOpen(false);
+
+    if (page === 'home') {
+      window.history.pushState({}, '', '/');
+      setCurrentPage('home');
+
+      if (sectionId) {
+        setTimeout(() => {
+          document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+      return;
+    }
+
+    window.history.pushState({}, '', `/${page}`);
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   useEffect(() => {
     const path = window.location.pathname;
@@ -113,53 +137,85 @@ const [currentPage, setCurrentPage] = useState<'home' | 'payment' | 'audiobook' 
       <Checkout isOpen={cartOpen} onClose={() => setCartOpen(false)} />
       <div className="min-h-screen">
         <header className="fixed top-0 left-0 right-0 bg-gradient-to-r from-slate-900/95 to-slate-800/95 backdrop-blur-md shadow-lg z-50 border-b border-amber-500/30">
-        <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4" aria-label="Main navigation">
-          <div className="flex justify-between items-center">
-            <a href="#home" className="flex items-center">
-              <img src="/image.png" alt="Berhanu Aberra Tadesse - Home" className="h-12" />
-            </a>
-            <div className="hidden lg:flex items-center justify-center flex-1 mx-4 lg:mx-8 space-x-1 lg:space-x-2">
-              <a href="/" onClick={(e) => { e.preventDefault(); window.history.pushState({}, '', '/'); setCurrentPage('home'); window.scrollTo(0, 0); }} className={`px-3 lg:px-4 py-2 rounded-md text-sm font-semibold tracking-wide transition-all duration-200 ${currentPage === 'home' ? 'text-amber-400 bg-slate-800' : 'text-gray-300 hover:text-white hover:bg-slate-800/50'}`}>Home</a>
-              <a href="#about" onClick={(e) => { if (currentPage !== 'home') { e.preventDefault(); window.history.pushState({}, '', '/'); setCurrentPage('home'); setTimeout(() => document.getElementById('about')?.scrollIntoView(), 100); } }} className="px-3 lg:px-4 py-2 rounded-md text-sm font-semibold tracking-wide text-gray-300 hover:text-white hover:bg-slate-800/50 transition-all duration-200">About</a>
-              <a href="#book" onClick={(e) => { if (currentPage !== 'home') { e.preventDefault(); window.history.pushState({}, '', '/'); setCurrentPage('home'); setTimeout(() => document.getElementById('book')?.scrollIntoView(), 100); } }} className="px-3 lg:px-4 py-2 rounded-md text-sm font-semibold tracking-wide text-gray-300 hover:text-white hover:bg-slate-800/50 transition-all duration-200">Book</a>
-              
-              {/* Divider */}
-              <div className="h-5 w-px bg-slate-700 mx-2"></div>
-              
-              <a href="/audiobook" onClick={(e) => { e.preventDefault(); window.history.pushState({}, '', '/audiobook'); setCurrentPage('audiobook'); window.scrollTo(0, 0); }} className={`px-3 lg:px-4 py-2 rounded-md text-sm font-semibold tracking-wide transition-all duration-200 ${currentPage === 'audiobook' ? 'text-amber-400 bg-slate-800' : 'text-gray-300 hover:text-white hover:bg-slate-800/50'}`}>Audiobook</a>
-              <a href="/courses" onClick={(e) => { e.preventDefault(); window.history.pushState({}, '', '/courses'); setCurrentPage('courses'); window.scrollTo(0, 0); }} className={`px-3 lg:px-4 py-2 rounded-md text-sm font-semibold tracking-wide transition-all duration-200 ${currentPage === 'courses' ? 'text-amber-400 bg-slate-800' : 'text-gray-300 hover:text-white hover:bg-slate-800/50'}`}>Courses</a>
-              <a href="/blog" onClick={(e) => { e.preventDefault(); window.history.pushState({}, '', '/blog'); setCurrentPage('blog'); window.scrollTo(0, 0); }} className={`px-3 lg:px-4 py-2 rounded-md text-sm font-semibold tracking-wide transition-all duration-200 ${currentPage === 'blog' ? 'text-amber-400 bg-slate-800' : 'text-gray-300 hover:text-white hover:bg-slate-800/50'}`}>Blog</a>
-              
-              {/* Divider */}
-              <div className="h-5 w-px bg-slate-700 mx-2"></div>
-              
-              <a href="#contact" onClick={(e) => { if (currentPage !== 'home') { e.preventDefault(); window.history.pushState({}, '', '/'); setCurrentPage('home'); setTimeout(() => document.getElementById('contact')?.scrollIntoView(), 100); } }} className="px-3 lg:px-4 py-2 rounded-md text-sm font-semibold tracking-wide text-gray-300 hover:text-white hover:bg-slate-800/50 transition-all duration-200">Contact</a>
-            </div>
+          <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4" aria-label="Main navigation">
+            <div className="flex justify-between items-center gap-3">
+              <a href="#home" className="flex items-center" onClick={(e) => { e.preventDefault(); handleNavigation('home'); }}>
+                <img src="/image.png" alt="Berhanu Aberra Tadesse - Home" className="h-12" />
+              </a>
 
-              <button
-                onClick={() => setProductSelectorOpen(true)}
-                className="hidden md:inline-flex items-center justify-center px-6 py-2 bg-amber-500 text-white font-bold text-sm rounded-lg hover:bg-amber-600 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2 focus:ring-offset-slate-900 transition-all transform hover:scale-105 shadow-lg hover:shadow-xl"
-                aria-label="Open product selector to order the book"
-              >
-                <Book className="mr-2" size={18} />
-                Order Now
-              </button>
-              <button
-                onClick={() => setCartOpen(true)}
-                className="relative p-2 text-gray-300 hover:text-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-400 rounded transition-colors"
-                aria-label={`Shopping cart with ${totalItems} item${totalItems !== 1 ? 's' : ''}`}
-              >
-                <ShoppingCart size={24} />
-                {totalItems > 0 && (
-                  <span className="absolute top-0 right-0 bg-amber-500 text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center" aria-hidden="false">
-                    {totalItems}
-                  </span>
-                )}
-              </button>
+              <div className="hidden lg:flex items-center justify-center flex-1 mx-4 lg:mx-8 space-x-1 lg:space-x-2">
+                <a href="/" onClick={(e) => { e.preventDefault(); handleNavigation('home'); }} className={`px-3 lg:px-4 py-2 rounded-md text-sm font-semibold tracking-wide transition-all duration-200 ${currentPage === 'home' ? 'text-amber-400 bg-slate-800' : 'text-gray-300 hover:text-white hover:bg-slate-800/50'}`}>Home</a>
+                <a href="#about" onClick={(e) => { e.preventDefault(); handleNavigation('home', 'about'); }} className="px-3 lg:px-4 py-2 rounded-md text-sm font-semibold tracking-wide text-gray-300 hover:text-white hover:bg-slate-800/50 transition-all duration-200">About</a>
+                <a href="#book" onClick={(e) => { e.preventDefault(); handleNavigation('home', 'book'); }} className="px-3 lg:px-4 py-2 rounded-md text-sm font-semibold tracking-wide text-gray-300 hover:text-white hover:bg-slate-800/50 transition-all duration-200">Book</a>
+
+                <div className="h-5 w-px bg-slate-700 mx-2"></div>
+
+                <a href="/audiobook" onClick={(e) => { e.preventDefault(); handleNavigation('audiobook'); }} className={`px-3 lg:px-4 py-2 rounded-md text-sm font-semibold tracking-wide transition-all duration-200 ${currentPage === 'audiobook' ? 'text-amber-400 bg-slate-800' : 'text-gray-300 hover:text-white hover:bg-slate-800/50'}`}>Audiobook</a>
+                <a href="/courses" onClick={(e) => { e.preventDefault(); handleNavigation('courses'); }} className={`px-3 lg:px-4 py-2 rounded-md text-sm font-semibold tracking-wide transition-all duration-200 ${currentPage === 'courses' ? 'text-amber-400 bg-slate-800' : 'text-gray-300 hover:text-white hover:bg-slate-800/50'}`}>Courses</a>
+                <a href="/blog" onClick={(e) => { e.preventDefault(); handleNavigation('blog'); }} className={`px-3 lg:px-4 py-2 rounded-md text-sm font-semibold tracking-wide transition-all duration-200 ${currentPage === 'blog' ? 'text-amber-400 bg-slate-800' : 'text-gray-300 hover:text-white hover:bg-slate-800/50'}`}>Blog</a>
+
+                <div className="h-5 w-px bg-slate-700 mx-2"></div>
+
+                <a href="#contact" onClick={(e) => { e.preventDefault(); handleNavigation('home', 'contact'); }} className="px-3 lg:px-4 py-2 rounded-md text-sm font-semibold tracking-wide text-gray-300 hover:text-white hover:bg-slate-800/50 transition-all duration-200">Contact</a>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setProductSelectorOpen(true)}
+                  className="hidden md:inline-flex items-center justify-center px-6 py-2 bg-amber-500 text-white font-bold text-sm rounded-lg hover:bg-amber-600 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2 focus:ring-offset-slate-900 transition-all transform hover:scale-105 shadow-lg hover:shadow-xl"
+                  aria-label="Open product selector to order the book"
+                >
+                  <Book className="mr-2" size={18} />
+                  Order Now
+                </button>
+                <button
+                  onClick={() => setCartOpen(true)}
+                  className="relative p-2 text-gray-300 hover:text-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-400 rounded transition-colors"
+                  aria-label={`Shopping cart with ${totalItems} item${totalItems !== 1 ? 's' : ''}`}
+                >
+                  <ShoppingCart size={24} />
+                  {totalItems > 0 && (
+                    <span className="absolute top-0 right-0 bg-amber-500 text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center" aria-hidden="false">
+                      {totalItems}
+                    </span>
+                  )}
+                </button>
+                <button
+                  onClick={() => setMobileMenuOpen((prev) => !prev)}
+                  className="inline-flex items-center justify-center rounded-lg p-2 text-gray-300 hover:bg-slate-800/50 hover:text-white focus:outline-none focus:ring-2 focus:ring-amber-400 lg:hidden"
+                  aria-label="Toggle navigation menu"
+                  aria-expanded={mobileMenuOpen}
+                >
+                  {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+                </button>
+              </div>
             </div>
-          {/* </div> */}
-        </nav>
-      </header>
+          </nav>
+
+          {mobileMenuOpen && (
+            <div className="border-t border-slate-800 bg-slate-900/95 backdrop-blur-md lg:hidden">
+              <div className="mx-auto flex max-w-7xl flex-col gap-2 px-4 py-4 sm:px-6">
+                <a href="/" onClick={(e) => { e.preventDefault(); handleNavigation('home'); }} className="rounded-lg px-3 py-2 text-base font-semibold text-gray-200 transition hover:bg-slate-800/50 hover:text-white">Home</a>
+                <a href="#about" onClick={(e) => { e.preventDefault(); handleNavigation('home', 'about'); }} className="rounded-lg px-3 py-2 text-base font-semibold text-gray-200 transition hover:bg-slate-800/50 hover:text-white">About</a>
+                <a href="#book" onClick={(e) => { e.preventDefault(); handleNavigation('home', 'book'); }} className="rounded-lg px-3 py-2 text-base font-semibold text-gray-200 transition hover:bg-slate-800/50 hover:text-white">Book</a>
+                <a href="/audiobook" onClick={(e) => { e.preventDefault(); handleNavigation('audiobook'); }} className="rounded-lg px-3 py-2 text-base font-semibold text-gray-200 transition hover:bg-slate-800/50 hover:text-white">Audiobook</a>
+                <a href="/courses" onClick={(e) => { e.preventDefault(); handleNavigation('courses'); }} className="rounded-lg px-3 py-2 text-base font-semibold text-gray-200 transition hover:bg-slate-800/50 hover:text-white">Courses</a>
+                <a href="/blog" onClick={(e) => { e.preventDefault(); handleNavigation('blog'); }} className="rounded-lg px-3 py-2 text-base font-semibold text-gray-200 transition hover:bg-slate-800/50 hover:text-white">Blog</a>
+                <a href="#contact" onClick={(e) => { e.preventDefault(); handleNavigation('home', 'contact'); }} className="rounded-lg px-3 py-2 text-base font-semibold text-gray-200 transition hover:bg-slate-800/50 hover:text-white">Contact</a>
+                <button
+                  onClick={() => {
+                    setProductSelectorOpen(true);
+                    setMobileMenuOpen(false);
+                  }}
+                  className="mt-2 inline-flex items-center justify-center rounded-lg bg-amber-500 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-amber-600"
+                >
+                  <Book className="mr-2" size={18} />
+                  Order Now
+                </button>
+              </div>
+            </div>
+          )}
+        </header>
 
 
       <main id="main" className="pt-16">
